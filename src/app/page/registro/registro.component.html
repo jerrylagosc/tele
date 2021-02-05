@@ -1,0 +1,117 @@
+<mat-card>
+
+  <h3>Datos de la persona natural o jurídica que solicita el servicio de trámites virtuales:</h3>
+  <form [formGroup]="registerForm" >
+
+    <mat-form-field class="full-width">
+      <mat-label>Tipo de documento *</mat-label>
+      <mat-select (selectionChange)="changeValidators($event)" formControlName="type_document" placeholder="Tipo de documento">
+        <mat-option *ngFor="let type of listTypesCodument" [value]="type.initial"> {{type.name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Número de Identificación *</mat-label>
+      <input matInput type="number" placeholder="Número de Identificación" formControlName="identification">
+    </mat-form-field>
+
+    <div *ngIf="registerForm.value.type_document == 'nit' || registerForm.value.type_document == 'ie'" formGroupName="detail">
+
+      <mat-form-field class="full-width">
+        <mat-label>Nombre de la compañía *</mat-label>
+        <input matInput placeholder="Nombre de la compañía" formControlName="name_company">
+      </mat-form-field>
+      <app-control-error [control]="registerForm.controls.detail['controls'].name_company"></app-control-error>
+
+      <mat-form-field class="full-width">
+        <mat-label>Primer Nombre *</mat-label>
+        <input matInput placeholder="Primer Nombre" formControlName="first_name">
+      </mat-form-field>
+      <app-control-error [control]="registerForm.controls.detail['controls'].first_name"></app-control-error>
+
+      <mat-form-field class="full-width">
+        <mat-label>Segundo Nombre *</mat-label>
+        <input matInput placeholder="Segundo Nombre" formControlName="second_name">
+      </mat-form-field>
+      <app-control-error [control]="registerForm.controls.detail['controls'].second_name"></app-control-error>
+
+
+      <mat-form-field class="full-width">
+        <mat-label>Primer Apellido *</mat-label>
+        <input matInput placeholder="Primer Apellido" formControlName="first_surname">
+      </mat-form-field>
+      <app-control-error [control]="registerForm.controls.detail['controls'].first_surname"></app-control-error>
+
+      <mat-form-field class="full-width">
+        <mat-label>Segundo Apellido *</mat-label>
+        <input matInput placeholder="Segundo Apellido" formControlName="second_surname">
+      </mat-form-field>
+      <app-control-error [control]="registerForm.controls.detail['controls'].second_surname"></app-control-error>
+
+    </div>
+
+
+    <mat-form-field class="full-width">
+      <mat-label>Correo de facturación *</mat-label>
+      <input matInput type="email" placeholder="Correo de facturación" formControlName="email">
+    </mat-form-field>
+    <app-control-error [control]="registerForm.controls.email"></app-control-error>
+
+
+    <mat-form-field class="full-width">
+      <mat-label>Municipio *</mat-label>
+      <input
+        matInput
+        placeholder="Municipio"
+        formControlName="town"
+        [matAutocomplete]="auto">
+
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredMunicipio$ | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Número de celular *</mat-label>
+      <input matInput placeholder="Número de celular" formControlName="mobile">
+    </mat-form-field>
+    <div *ngIf="registerForm.get('mobile').invalid &&
+      registerForm.get('mobile').errors &&
+      (registerForm.get('mobile').dirty || registerForm.get('mobile').touched)">
+        <small class="text-danger"
+            *ngIf="registerForm.get('mobile').hasError('required')">
+            Este campo es requerido
+        </small>
+        <small class="text-danger"
+            *ngIf="registerForm.get('mobile').hasError('minlength') || registerForm.get('mobile').hasError('maxlength')">
+            Este campo de contener 10 dígitos.
+        </small>
+    </div>
+
+    <mat-checkbox
+      value="true"
+      formControlName="autorization">
+      Autorizo el envío de mensajes al celular suministrado
+    </mat-checkbox>
+    <br>
+    <mat-checkbox
+      value="true"
+      formControlName="second_autorization">
+      Autorizo el envío de mensajes a la dirección de correo electrónico
+    </mat-checkbox>
+
+    <div align="center">
+      <button
+        (click)="saveData()"
+        color="primary"
+        mat-button style="width: 95%;">
+        Guardar
+      </button>
+    </div>
+  </form>
+</mat-card>
+
+

@@ -1,0 +1,16 @@
+<mat-card>
+
+  <form [formGroup]="formLogin" >
+
+    <mat-form-field class="full-width">
+      <mat-label>Nit *</mat-label>
+      <input type="number" matInput placeholder="Nit *" formControlName="nit">
+    </mat-form-field>
+
+    <button
+      (click)="login()">
+      Iniciar sesión
+    </button>
+  </form>
+
+</mat-card>
